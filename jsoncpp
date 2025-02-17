@@ -1,0 +1,1 @@
+g++ main.cpp -o service -I/usr/include/jsoncpp -ljsoncpp -lmysqlclient
