@@ -1,2 +1,2 @@
-curl http://localhost:8888/getUserData
+curl -v http://localhost:8080/getUserData
 curl http://localhost:8888/getVideo -o 123.mp4
