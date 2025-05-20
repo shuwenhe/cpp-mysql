@@ -1,4 +1,4 @@
 main
-cfg.h
+cnf.h
 json/
 app/src/main/json
