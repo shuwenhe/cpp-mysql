@@ -89,7 +89,7 @@ Json::Value get_user_data(){
 		error_json["message"] = "Error connecting to database:" + std::string(mysql_error(conn));
 		return error_json;
 	}
-	if(mysql_query(conn,"SELECT , mark, label_id, group_id, nickname, avatar, phone, addres, cancel_time, create_time, last_time, last_ip, now_money, brokerage_price, status, spread_uid, spread_time, spread_limit, brokerage_level, user_type, promoter_time, is_promoter, main_uid, pay_count, pay_price, spread_count, spread_pay_count, spread_pay_price, integral, member_level, member_value, count_start, count_fans, count_content, is_svip, svip_endtime, svip_save_money FROM crmeb_merchant.`eb_user`;")){
+	if(mysql_query(conn,"SELECT ,name,description,price FROM goods.`goods`;")){
 		std::cerr<<"error query database:"<<mysql_error(conn)<<std::endl;
 		Json::Value error_json;
 		error_json["status"] = "error";
@@ -101,12 +101,7 @@ Json::Value get_user_data(){
 	while((row = mysql_fetch_row(res)) != NULL){
 		Json::Value user;
 		std::vector<std::string> columns = {
-			"uid", "wechat_user_id", "account", "pwd", "real_name", "sex", "birthday", "card_id",
-			"mark", "label_id", "group_id", "nickname", "avatar", "phone", "addres", "cancel_time",
-            "create_time", "last_time", "last_ip", "now_money", "brokerage_price", "status",
-            "spread_uid", "spread_time", "spread_limit", "brokerage_level", "user_type",
-            "promoter_time", "is_promoter", "main_uid", "pay_count", "pay_price", "spread_count",                "spread_pay_count", "spread_pay_price", "integral", "member_level", "member_value",
-            "count_start", "count_fans", "count_content", "is_svip", "svip_endtime", "svip_save_money"
+			"name", "description", "price"
 			};
 		for (size_t i = 0; i < columns.size(); ++i) {
 			user[columns[i]] = row[i] ? row[i] : "";
