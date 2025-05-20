@@ -124,8 +124,10 @@ int main(){
 	double price[DATA_SIZE];
 	httplib::Server svr;
 	svr.Get("/getUserData",[](const httplib::Request& req,httplib::Response& res){
-			Json::Value data = get_user_data();
-			res.set_content(data.toStyledString(),"application/json");
+        std::cout << "[INFO] /getUserData called" << std::endl;
+        Json::Value data = get_user_data();
+        std::cout << "[INFO] Returning JSON: " << data.toStyledString() << std::endl;
+		res.set_content(data.toStyledString(),"application/json");
 	});
 	svr.Get("/getVideo",sendVideo); 
 	std::cout<<"Server started at http://localhost:8080"<<std::endl;
