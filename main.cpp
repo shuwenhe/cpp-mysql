@@ -89,7 +89,7 @@ Json::Value get_user_data(){
 		error_json["message"] = "Error connecting to database:" + std::string(mysql_error(conn));
 		return error_json;
 	}
-	if(mysql_query(conn,"SELECT ,name,description,price FROM goods.`goods`;")){
+	if(mysql_query(conn,"SELECT name,description,price FROM goods.`goods`;")){
 		std::cerr<<"error query database:"<<mysql_error(conn)<<std::endl;
 		Json::Value error_json;
 		error_json["status"] = "error";
