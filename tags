@@ -362,7 +362,7 @@ dash_	httplib.h	/^  const std::string dash_ = "--";$/;"	m	class:httplib::detail:
 dash_boundary_crlf_	httplib.h	/^  std::string dash_boundary_crlf_;$/;"	m	class:httplib::detail::MultipartFormDataParser
 data	httplib.h	/^inline const char *mmap::data() const {$/;"	f	class:httplib::detail::mmap
 data_sink_streambuf	httplib.h	/^    explicit data_sink_streambuf(DataSink &sink) : sink_(sink) {}$/;"	f	class:httplib::DataSink::final
-db	cnf.h	/^const char* db = "crmeb_merchant";$/;"	v
+db	cnf.h	/^const char* db = "shuwen";$/;"	v
 decode_url	httplib.h	/^inline std::string decode_url(const std::string &s,$/;"	f	namespace:httplib::detail
 decoder_r	httplib.h	/^  BrotliDecoderResult decoder_r;$/;"	m	class:httplib::detail::final
 decoder_s	httplib.h	/^  BrotliDecoderState *decoder_s = nullptr;$/;"	m	class:httplib::detail::final
@@ -493,7 +493,7 @@ header_writer_	httplib.h	/^  std::function<ssize_t(Stream &, Headers &)> header_
 headers	httplib.h	/^    Headers headers;$/;"	m	struct:httplib::Server::MountPointEntry
 headers	httplib.h	/^  Headers headers;$/;"	m	struct:httplib::Request
 headers	httplib.h	/^  Headers headers;$/;"	m	struct:httplib::Response
-host	cnf.h	/^const char* host = "39.107.59.4";$/;"	v
+host	cnf.h	/^const char* host = "139.10.159.40";$/;"	v
 host	httplib.h	/^inline std::string Client::host() const { return cli_->host(); }$/;"	f	class:httplib::Client
 host	httplib.h	/^inline std::string ClientImpl::host() const { return host_; }$/;"	f	class:httplib::ClientImpl
 host_	httplib.h	/^  const std::string host_;$/;"	m	class:httplib::ClientImpl
@@ -660,7 +660,7 @@ payload_max_length_	httplib.h	/^  size_t payload_max_length_ = CPPHTTPLIB_PAYLOA
 poll	httplib.h	10211;"	d
 poll	httplib.h	193;"	d
 pool_	httplib.h	/^    ThreadPool &pool_;$/;"	m	struct:httplib::final::worker
-port	cnf.h	/^const int port = 33061;$/;"	v
+port	cnf.h	/^const int port = 3306;$/;"	v
 port	httplib.h	/^inline int Client::port() const { return cli_->port(); }$/;"	f	class:httplib::Client
 port	httplib.h	/^inline int ClientImpl::port() const { return port_; }$/;"	f	class:httplib::ClientImpl
 port_	httplib.h	/^  const int port_;$/;"	m	class:httplib::ClientImpl
@@ -694,7 +694,7 @@ proxy_port_	httplib.h	/^  int proxy_port_ = -1;$/;"	m	class:httplib::ClientImpl
 ptr	httplib.h	/^inline const char *stream_line_reader::ptr() const {$/;"	f	class:httplib::detail::stream_line_reader
 put_handlers_	httplib.h	/^  Handlers put_handlers_;$/;"	m	class:httplib::Server
 put_handlers_for_content_reader_	httplib.h	/^  HandlersForContentReader put_handlers_for_content_reader_;$/;"	m	class:httplib::Server
-pwd	cnf.h	/^const char* pwd = "shuwen-shop!#123456!#";$/;"	v
+pwd	cnf.h	/^const char* pwd = "123@_00..";$/;"	v
 random_string	httplib.h	/^inline std::string random_string(size_t length) {$/;"	f	namespace:httplib::detail
 range_error	httplib.h	/^inline bool range_error(Request &req, Response &res) {$/;"	f	namespace:httplib::detail
 ranges	httplib.h	/^  Ranges ranges;$/;"	m	struct:httplib::Request
@@ -749,7 +749,7 @@ send	httplib.h	/^inline Result Client::send(const Request &req) { return cli_->s
 send	httplib.h	/^inline Result ClientImpl::send(const Request &req) {$/;"	f	class:httplib::ClientImpl
 send	httplib.h	/^inline bool Client::send(Request &req, Response &res, Error &error) {$/;"	f	class:httplib::Client
 send	httplib.h	/^inline bool ClientImpl::send(Request &req, Response &res, Error &error) {$/;"	f	class:httplib::ClientImpl
-sendVideo	main.cpp	/^void sendVideo(const httplib::Request& req,httplib::Response& res){$/;"	f
+sendVideo	main.cpp	/^void sendVideo(const httplib::Request& req, httplib::Response& res) {$/;"	f
 send_	httplib.h	/^inline Result ClientImpl::send_(Request &&req) {$/;"	f	class:httplib::ClientImpl
 send_	httplib.h	/^inline bool ClientImpl::send_(Request &req, Response &res, Error &error) {$/;"	f	class:httplib::ClientImpl
 send_socket	httplib.h	/^inline ssize_t send_socket(socket_t sock, const void *ptr, size_t size,$/;"	f	namespace:httplib::detail
@@ -936,7 +936,7 @@ unescape_abstract_namespace_unix_domain	httplib.h	/^unescape_abstract_namespace_
 unused_306	httplib.h	/^  unused_306 = 306,$/;"	e	enum:httplib::StatusCode
 update_certs	httplib.h	/^inline void SSLServer::update_certs(X509 *cert, EVP_PKEY *private_key,$/;"	f	class:httplib::SSLServer
 url_encode_	httplib.h	/^  bool url_encode_ = true;$/;"	m	class:httplib::ClientImpl
-user	cnf.h	/^const char* user = "root";$/;"	v
+user	cnf.h	/^const char* user = "shuwen";$/;"	v
 value	httplib.h	/^  Response &value() { return *res_; }$/;"	f	class:httplib::Result
 value	httplib.h	/^  const Response &value() const { return *res_; }$/;"	f	class:httplib::Result
 verify_host	httplib.h	/^inline bool SSLClient::verify_host(X509 *server_cert) const {$/;"	f	class:httplib::SSLClient
@@ -945,7 +945,7 @@ verify_host_with_subject_alt_name	httplib.h	/^SSLClient::verify_host_with_subjec
 verify_result_	httplib.h	/^  long verify_result_ = 0;$/;"	m	class:httplib::final
 version	httplib.h	/^  std::string version;$/;"	m	struct:httplib::Request
 version	httplib.h	/^  std::string version;$/;"	m	struct:httplib::Response
-videoFilePath	main.cpp	/^const std::string videoFilePath = "123.mp4";$/;"	v
+videoFilePath	main.cpp	/^const std::string videoFilePath = "\/";$/;"	v
 wait_until_ready	httplib.h	/^inline void Server::wait_until_ready() const {$/;"	f	class:httplib::Server
 wait_until_socket_is_ready	httplib.h	/^inline Error wait_until_socket_is_ready(socket_t sock, time_t sec,$/;"	f	namespace:httplib::detail
 web_pages	index.cpp	/^std::map<std::string, std::string> web_pages;$/;"	v
