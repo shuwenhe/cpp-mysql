@@ -12,7 +12,6 @@ void writeToResponse(httplib::Response& res,const char* buffer,size_t size){
 	res.body.append(buffer,size);
 }
 
-// Function to handle sending video and supporting range requests
 void sendVideo(const httplib::Request& req, httplib::Response& res) {
     std::ifstream videoFile(videoFilePath, std::ios::binary);
     if (!videoFile) {
@@ -25,15 +24,12 @@ void sendVideo(const httplib::Request& req, httplib::Response& res) {
     size_t fileSize = videoFile.tellg();
     videoFile.seekg(0, std::ios::beg);
 
-    // Default headers
     res.set_header("Content-Type", "video/mp4");
     res.set_header("Content-Length", std::to_string(fileSize));
     res.set_header("Cache-Control", "no-cache");  // Prevent caching issues
 
-    // Handle Range header for partial content requests
     std::string rangeHeader = req.get_header_value("Range");
     if (!rangeHeader.empty()) {
-        // Extract range from the header
         size_t startPos = rangeHeader.find("=") + 1;
         size_t dashPos = rangeHeader.find("-");
         size_t start = std::stoull(rangeHeader.substr(startPos, dashPos - startPos));
@@ -44,22 +40,19 @@ void sendVideo(const httplib::Request& req, httplib::Response& res) {
         }
 
         if (start >= fileSize) {
-            res.status = 416; // Range Not Satisfiable
+            res.status = 416; 
             res.set_content("Requested range is not satisfiable", "text/plain");
             return;
         }
 
-        // Set status and content length for partial content
-        res.status = 206; // Partial Content
+        res.status = 206;
         res.set_header("Content-Range", "bytes " + std::to_string(start) + "-" + std::to_string(end) + "/" + std::to_string(fileSize));
         res.set_header("Content-Length", std::to_string(end - start + 1));
 
-        // Seek to the start of the range
         videoFile.seekg(start, std::ios::beg);
-        size_t bufferSize = 1024 * 16; // Smaller buffer size for better performance
+        size_t bufferSize = 1024 * 16; 
         char buffer[bufferSize];
 
-        // Send video content in chunks
         size_t bytesToSend = end - start + 1;
         while (bytesToSend > 0) {
             size_t chunkSize = std::min(bytesToSend, bufferSize);
@@ -68,9 +61,8 @@ void sendVideo(const httplib::Request& req, httplib::Response& res) {
             bytesToSend -= chunkSize;
         }
     } else {
-        // Send the full video file if no Range header is present
         res.set_header("Content-Range", "bytes 0-" + std::to_string(fileSize - 1) + "/" + std::to_string(fileSize)); // For compatibility
-        size_t bufferSize = 1024 * 1024; // Larger buffer for full file transfer
+        size_t bufferSize = 1024 * 1024;
         char buffer[bufferSize];
         while (videoFile.read(buffer, bufferSize)) {
             writeToResponse(res, buffer, bufferSize);
