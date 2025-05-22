@@ -1,39 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学思题库www.xstiku.com</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>商品列表</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>学思题库 算法竞赛报名联系 何书文 老师 电话微信：15010729356</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section id="home">
-            <h2>Home</h2>
-            <p>This is the home section of the web page.</p>
-        </section>
-        <section id="about">
-            <h2>About</h2>
-            <p>This section contains information about the page.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Feel free to reach out!</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 北京书文创新教育科技有限公司</p>
-        <p>京ICP备15025412号</p>
-    </footer>
+
+  <h1>商品信息</h1>
+  <div id="status">加载中...</div>
+  <table id="goodsTable" style="display: none;">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>描述</th>
+        <th>价格</th>
+      </tr>
+    </thead>
+    <tbody id="goodsBody">
+      <!-- 数据将插入在这里 -->
+    </tbody>
+  </table>
+
+  <script>
+    fetch('http://www.xstiku.com:8080/getUserData')
+      .then(response => response.json())
+      .then(data => {
+        const statusDiv = document.getElementById("status");
+
+        if (data.status !== "success") {
+          statusDiv.innerHTML = `<span class="error">获取数据失败：${data.message}</span>`;
+          return;
+        }
+
+        const goods = data.data;
+        const tbody = document.getElementById("goodsBody");
+
+        goods.forEach(item => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.description}</td>
+            <td>${item.price}</td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        document.getElementById("goodsTable").style.display = "table";
+        statusDiv.innerText = "加载成功，共 " + goods.length + " 项商品";
+      })
+      .catch(error => {
+        document.getElementById("status").innerHTML = `<span class="error">请求失败: ${error.message}</span>`;
+      });
+  </script>
+
 </body>
 </html>
