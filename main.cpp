@@ -129,6 +129,19 @@ int main(){
         std::cout << "[INFO] Returning JSON: " << data.toStyledString() << std::endl;
 		res.set_content(data.toStyledString(),"application/json");
 	});
+    // 加在 main() 中 svr.Get("/getUserData", ...) 之后
+svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
+    std::ifstream file("index.html");
+    if (!file) {
+        res.status = 404;
+        res.set_content("index.html not found", "text/plain");
+        return;
+    }
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    res.set_content(buffer.str(), "text/html; charset=UTF-8");
+});
+
     //
     svr.set_default_headers({
     {"Access-Control-Allow-Origin", "*"},
