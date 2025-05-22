@@ -129,6 +129,13 @@ int main(){
         std::cout << "[INFO] Returning JSON: " << data.toStyledString() << std::endl;
 		res.set_content(data.toStyledString(),"application/json");
 	});
+    //
+    svr.set_default_headers({
+    {"Access-Control-Allow-Origin", "*"},
+    {"Access-Control-Allow-Methods", "GET, POST, OPTIONS"},
+    {"Access-Control-Allow-Headers", "Content-Type"}
+    });
+    //
 	svr.Get("/getVideo",sendVideo); 
 	std::cout<<"Server started at http://localhost:8080"<<std::endl;
 	svr.listen("0.0.0.0",8080);
