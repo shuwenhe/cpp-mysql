@@ -142,6 +142,32 @@ svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
     res.set_content(buffer.str(), "text/html; charset=UTF-8");
 });
 
+svr.Get(R"(/(.*))", [](const httplib::Request& req, httplib::Response& res) {
+    std::string file_path = req.path.substr(1);  // 去掉前面的 `/`
+    std::ifstream file(file_path, std::ios::binary);
+    if (!file) {
+        res.status = 404;
+        res.set_content("File not found", "text/plain");
+        return;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string content = buffer.str();
+
+    // 简单的 MIME 类型判断
+    if (file_path.ends_with(".html")) {
+        res.set_content(content, "text/html; charset=UTF-8");
+    } else if (file_path.ends_with(".css")) {
+        res.set_content(content, "text/css");
+    } else if (file_path.ends_with(".js")) {
+        res.set_content(content, "application/javascript");
+    } else {
+        res.set_content(content, "application/octet-stream");
+    }
+});
+
+
     //
     svr.set_default_headers({
     {"Access-Control-Allow-Origin", "*"},
