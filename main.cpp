@@ -175,6 +175,13 @@ svr.Get(R"(/(.*))", [](const httplib::Request& req, httplib::Response& res) {
     {"Access-Control-Allow-Headers", "Content-Type"}
     });
     //
+    svr.Options(R"(.*)", [](const httplib::Request&, httplib::Response& res) {
+    res.set_header("Access-Control-Allow-Origin", "*");
+    res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.set_header("Access-Control-Allow-Headers", "Content-Type");
+    res.status = 204;  // No content
+});
+
 	svr.Get("/getVideo",sendVideo); 
 	std::cout<<"Server started at http://localhost:8080"<<std::endl;
 	svr.listen("0.0.0.0",8080);
