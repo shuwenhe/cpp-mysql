@@ -120,6 +120,27 @@ void generate_price(double *price,int size){
 
 }
 
+// Delete an item from the database
+bool delete_item(const std::string& name) {
+    MYSQL *conn;
+    conn = mysql_init(NULL);
+    if (!mysql_real_connect(conn, host, user, pwd, db, port, NULL, 0)) {
+        std::cerr << "Error connecting to database: " << mysql_error(conn) << std::endl;
+        mysql_close(conn);
+        return false;
+    }
+
+    std::string query = "DELETE FROM goods.`goods` WHERE name = '" + name + "';";
+    if (mysql_query(conn, query.c_str())) {
+        std::cerr << "Error deleting data: " << mysql_error(conn) << std::endl;
+        mysql_close(conn);
+        return false;
+    }
+
+    mysql_close(conn);
+    return true;
+}
+
 int main(){
 	double price[DATA_SIZE];
 	httplib::Server svr;
@@ -129,6 +150,24 @@ int main(){
         std::cout << "[INFO] Returning JSON: " << data.toStyledString() << std::endl;
 		res.set_content(data.toStyledString(),"application/json");
 	});
+
+    // Delete item route
+    svr.Delete("/deleteItem", [](const httplib::Request& req, httplib::Response& res) {
+        std::string name = req.get_param_value("name");
+
+        if (delete_item(name)) {
+            Json::Value success_response;
+            success_response["status"] = "success";
+            res.set_content(success_response.toStyledString(), "application/json");
+        } else {
+            Json::Value error_response;
+            error_response["status"] = "error";
+            error_response["message"] = "Failed to delete item.";
+            res.set_content(error_response.toStyledString(), "application/json");
+        }
+    });
+
+
     // 加在 main() 中 svr.Get("/getUserData", ...) 之后
 svr.Get("/", [](const httplib::Request& req, httplib::Response& res) {
     std::ifstream file("index.html");

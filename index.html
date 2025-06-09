@@ -73,6 +73,24 @@
       .catch(error => {
         document.getElementById("status").innerHTML = `<span class="error">请求失败: ${error.message}</span>`;
       });
+
+       function deleteItem(name) {
+      if (confirm(`确定要删除商品: ${name}?`)) {
+        fetch(`https://xstiku.com/deleteItem?name=${encodeURIComponent(name)}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "success") {
+            alert("删除成功!");
+            location.reload();  // 刷新页面，重新加载商品列表
+          } else {
+            alert(`删除失败: ${data.message}`);
+          }
+        })
+        .catch(error => alert(`请求失败: ${error.message}`));
+      }
+    }
   </script>
 
 </body>
