@@ -62,7 +62,12 @@
       tbody.innerHTML = ''; // Clear existing rows
 
       fetch('https://xstiku.com/getUserData')
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(data => {
           if (data.status !== "success") {
             statusDiv.innerHTML = `<span class="error">获取数据失败：${data.message}</span>`;
@@ -99,8 +104,19 @@
         },
         body: JSON.stringify({ name: name })
       })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text(); // Use text() to handle potential empty responses
+        })
+        .then(text => {
+          let data;
+          try {
+            data = JSON.parse(text); // Attempt to parse JSON
+          } catch (e) {
+            throw new Error('Invalid JSON response from server');
+          }
           if (data.status === "success") {
             document.getElementById("status").innerText = `商品 "${name}" 删除成功`;
             loadGoods(); // Reload the table
