@@ -24,6 +24,17 @@
     .error {
       color: red;
     }
+    .delete-btn {
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .delete-btn:hover {
+      background-color: #cc0000;
+    }
   </style>
 </head>
 <body>
@@ -36,6 +47,7 @@
         <th>名称</th>
         <th>描述</th>
         <th>价格</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody id="goodsBody">
@@ -44,53 +56,65 @@
   </table>
 
   <script>
-    fetch('https://xstiku.com/getUserData')
-      .then(response => response.json())
-      .then(data => {
-        const statusDiv = document.getElementById("status");
+    function loadGoods() {
+      const statusDiv = document.getElementById("status");
+      const tbody = document.getElementById("goodsBody");
+      tbody.innerHTML = ''; // Clear existing rows
 
-        if (data.status !== "success") {
-          statusDiv.innerHTML = `<span class="error">获取数据失败：${data.message}</span>`;
-          return;
-        }
+      fetch('https://xstiku.com/getUserData')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status !== "success") {
+            statusDiv.innerHTML = `<span class="error">获取数据失败：${data.message}</span>`;
+            return;
+          }
 
-        const goods = data.data;
-        const tbody = document.getElementById("goodsBody");
+          const goods = data.data;
+          goods.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${item.name}</td>
+              <td>${item.description}</td>
+              <td>${item.price}</td>
+              <td><button class="delete-btn" onclick="deleteItem('${item.name}')">删除</button></td>
+            `;
+            tbody.appendChild(row);
+          });
 
-        goods.forEach(item => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${item.name}</td>
-            <td>${item.description}</td>
-            <td>${item.price}</td>
-          `;
-          tbody.appendChild(row);
-        });
-
-        document.getElementById("goodsTable").style.display = "table";
-        statusDiv.innerText = "加载成功，共 " + goods.length + " 项商品";
-      })
-      .catch(error => {
-        document.getElementById("status").innerHTML = `<span class="error">请求失败: ${error.message}</span>`;
-      });
-
-       function deleteItem(name) {
-      if (confirm(`确定要删除商品: ${name}?`)) {
-        fetch(`https://xstiku.com/deleteItem?name=${encodeURIComponent(name)}`, {
-          method: 'DELETE'
+          document.getElementById("goodsTable").style.display = "table";
+          statusDiv.innerText = "加载成功，共 " + goods.length + " 项商品";
         })
+        .catch(error => {
+          statusDiv.innerHTML = `<span class="error">请求失败: ${error.message}</span>`;
+        });
+    }
+
+    function deleteItem(name) {
+      if (!confirm(`确认删除商品 "${name}" 吗？`)) return;
+
+      fetch('https://xstiku.com/deleteItem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: name })
+      })
         .then(response => response.json())
         .then(data => {
           if (data.status === "success") {
-            alert("删除成功!");
-            location.reload();  // 刷新页面，重新加载商品列表
+            document.getElementById("status").innerText = `商品 "${name}" 删除成功`;
+            loadGoods(); // Reload the table
           } else {
-            alert(`删除失败: ${data.message}`);
+            document.getElementById("status").innerHTML = `<span class="error">删除失败：${data.message}</span>`;
           }
         })
-        .catch(error => alert(`请求失败: ${error.message}`));
-      }
+        .catch(error => {
+          document.getElementById("status").innerHTML = `<span class="error">删除请求失败: ${error.message}</span>`;
+        });
     }
+
+    // Initial load
+    loadGoods();
   </script>
 
 </body>
