@@ -155,7 +155,6 @@ svr.Get(R"(/(.*))", [](const httplib::Request& req, httplib::Response& res) {
     buffer << file.rdbuf();
     std::string content = buffer.str();
 
-    // 简单的 MIME 类型判断
     if (file_path.ends_with(".html")) {
         res.set_content(content, "text/html; charset=UTF-8");
     } else if (file_path.ends_with(".css")) {
